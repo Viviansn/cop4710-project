@@ -1,0 +1,13 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1>Displays list of class search filters here:</h1>
+    <form class="site-form" action="{% url 'classes:add:results' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
+
+    
+    
+{% endblock %}
