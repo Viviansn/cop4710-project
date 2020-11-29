@@ -1,0 +1,39 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <h1>Displays results after listing search criteria in /classes/add/</h1>
+   
+    <table class="table">
+        <thead>
+            <tr>
+                {% for heading in header %}
+                    <th>{{heading}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for class in body %}
+                <tr>
+                    <td>{{class.course_reference_number}}</td>
+                    <td>{{class.subject_id}}{{class.number_id}}</td>
+                    <td>{{class.section}}</td>
+                    <td>{{class.time_start}}</td>
+                    <td>{{class.time_end}}</td>
+                    <td>{{class.first_name}} {{class.last_name}}</td>
+                    <td>
+                        
+                        <form  action="{% url 'classes:add:add_success' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="{{class.course_reference_number}}" name="submit">
+                        </form>
+                    </td> 
+                </tr>
+            {% endfor %}
+            
+            
+            
+        </tbody>
+    </table>
+    
+    
+{% endblock %}
