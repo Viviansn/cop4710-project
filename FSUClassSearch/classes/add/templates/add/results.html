@@ -17,9 +17,15 @@
                     <td>{{class.course_reference_number}}</td>
                     <td>{{class.subject_id}}{{class.number_id}}</td>
                     <td>{{class.section}}</td>
+                    <td>{{class.name}}</td>
+                    <td>{{class.first_name}} {{class.last_name}}</td>
+                    <td>{{class.lec_days}}</td>
                     <td>{{class.time_start}}</td>
                     <td>{{class.time_end}}</td>
-                    <td>{{class.first_name}} {{class.last_name}}</td>
+                    <td>{{class.rec_day}}</td>
+                    <td>{{class.recitation_time_start}}</td>
+                    <td>{{class.recitation_time_end}}</td>
+                    
                     <td>
                         
                         <form  action="{% url 'classes:add:add_success' %}" method="POST">

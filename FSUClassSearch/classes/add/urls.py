@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^$', views.home, name="home"),
     url(r'^results/$', views.results, name="results"),
     url(r'^success/$', views.add_success, name="add_success"),
+    url(r'^fail/$', views.add_fail, name="add_fail"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
