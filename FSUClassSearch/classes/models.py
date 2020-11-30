@@ -11,7 +11,7 @@ class Student(models.Model):
     semester = models.IntegerField()
 
     def __str__(self):
-        return self.FSUID.username 
+        return self.FSUID.username
 
 class Professor(models.Model):
     FSUID = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -71,7 +71,11 @@ class Enrolled_In(models.Model):
     course_reference_number = models.ForeignKey(Class, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.FSUID.username + ' - ' + self.course_reference_number
+        return str(self.FSUID) + ' - ' + self.course_reference_number.course_reference_number
+        
+        #return User.objects.get(pk=self.FSUID).username + ' - ' + self.course_reference_number
+        
+        #return self.FSUID.FSUID.username + ' - ' + self.course_reference_number
 
 
 
