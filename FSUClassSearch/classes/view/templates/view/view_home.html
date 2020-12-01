@@ -1,7 +1,49 @@
 {% extends 'base_layout.html' %}
 
+
 {% block content %}
-    <h1>View My Classes Page</h1>
-    <h2>List of classes here</h2>
+    <h1>My Schedule</h1>
+
+    <div class="b">
+        <br><h3>Number of classes: {{num_classes}}</h3>
+        {% if classes %}
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% for heading in header %}
+                            <th>{{heading}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for class in classes %}
+                        <tr>
+                            <td>{{class.course_reference_number}}</td>
+                            <td>{{class.subject_id}}{{class.number_id}}</td>
+                            <td>{{class.section}}</td>
+                            <td>{{class.name}}</td>
+                            <td>{{class.first_name}} {{class.last_name}}</td>
+                            <td>{{class.lec_days}}</td>
+                            <td>{{class.time_start}}</td>
+                            <td>{{class.time_end}}</td>
+                            <td>{{class.location}}</td>
+                            <td>{{class.rec_day}}</td>
+                            <td>{{class.recitation_time_start}}</td>
+                            <td>{{class.recitation_time_end}}</td>
+                            <td>{{class.recitation_location}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <br><br>
+            <h3>You are not registered for any classes.</h3>
+
+        {% endif %}
+        
+    </div>
+    
     
 {% endblock %}

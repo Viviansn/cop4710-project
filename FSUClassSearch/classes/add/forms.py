@@ -10,7 +10,6 @@ class SearchFilterForm(forms.Form):
     professor = forms.CharField(max_length=50, label='Professor', required=False)
     time_start = forms.TimeField(label='Time Start', required=False)
     time_end = forms.TimeField(label='Time End', required=False)
-    keywords = forms.CharField(max_length=60, label='Key Words', required=False)
     CSBS_Req = forms.BooleanField(label='CSBS Required', required=False)
     CSBS_Elec = forms.BooleanField(label='CSBS Elective', required=False)
     CSBA_Req = forms.BooleanField(label='CSBA Required', required=False)

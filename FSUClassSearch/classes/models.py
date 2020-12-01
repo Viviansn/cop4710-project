@@ -17,7 +17,7 @@ class Professor(models.Model):
     FSUID = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    office = models.CharField(max_length=10, blank=True) #############################################
+    office = models.CharField(max_length=10, blank=True) 
 
     def __str__(self):
         return self.FSUID.username
@@ -25,7 +25,7 @@ class Professor(models.Model):
 class Class(models.Model):
     course_reference_number = models.CharField(max_length=6, primary_key=True)
     name = models.CharField(max_length=60)        #i.e., Programming I
-    description = models.TextField(blank=True)    ############################### includes keywords like C++, arrays, for loops
+    description = models.TextField(blank=True)   
     subject_id = models.CharField(max_length=3)   #i.e., COP
     number_id = models.CharField(max_length=4)    #i.e., 3014 (combined w/ line above makes COP3014)
     section = models.IntegerField()
@@ -39,15 +39,14 @@ class Class(models.Model):
     time_start = models.TimeField(null=True, blank=True)
     time_end = models.TimeField(null=True, blank=True)
     date_start = models.DateField(default=date(2021, 1, 6))
-    # lecture_day = models.CharField()   "M-W-F", "T-TH", "W-F"
     date_end = models.DateField(default=date(2021, 4, 23))
     enrollment_capacity = models.IntegerField()
     enrollment_number = models.IntegerField(default=0)
-    location = models.CharField(max_length=10, blank=True) ########################################
+    location = models.CharField(max_length=10, blank=True) 
     hasRecitation = models.BooleanField(default=False)
     recitation_time_start = models.TimeField(null=True, blank=True)
     recitation_time_end = models.TimeField(null=True, blank=True)
-    recitation_location = models.CharField(max_length=10, blank=True)  ##############################
+    recitation_location = models.CharField(max_length=10, blank=True)  
     recommended_semester = models.IntegerField(null=True, blank=True)
     lec_mo = models.BooleanField(default=False)
     lec_tu = models.BooleanField(default=False)
@@ -73,9 +72,6 @@ class Enrolled_In(models.Model):
     def __str__(self):
         return str(self.FSUID) + ' - ' + self.course_reference_number.course_reference_number
         
-        #return User.objects.get(pk=self.FSUID).username + ' - ' + self.course_reference_number
-        
-        #return self.FSUID.FSUID.username + ' - ' + self.course_reference_number
 
 
 

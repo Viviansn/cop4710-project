@@ -17,7 +17,7 @@ def login_view(request):
         form = AuthenticationForm()
         
     return render(request, 'login.html', {'form' : form})
-    #return render(request, 'login.html')
+    
 
 @login_required(login_url='login')
 def home(request):

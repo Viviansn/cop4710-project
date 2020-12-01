@@ -1,12 +1,161 @@
+div.a {
+    
+    background-image: url('/static/FSU_Campus_Transparent.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+   
+    min-height: 600px;
+    
+    padding-top: 13px;
+    
+
+  }
+
+  div.b {
+        min-height: 400px;
+      background-color: white;
+  }
+
+.site-form{
+    
+    padding-top: 15%;
+    display: inline-block;
+    color: white;
+    
+}
+
+.site-form1{
+    
+    display: inline-block;
+    color: white;
+    
+}
+
+.site-form input, .site-form textarea{
+    display: block;
+    padding: 5px;
+    margin: 5px 0 20px 0;
+}
+
+.site-form label{
+    font-size: 20px;
+    
+}
+
+.button {
+    background-color: white; /* Green */
+    border: none;
+    color:  black;
+    padding: 20px;
+    
+    text-decoration: none;
+    display: inline-block;
+    font-size: 23px;
+    margin: 25px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    height:50px;
+    width:250px;
+    display: center;
+    align-items: center;
+  }
+
+  .button1 {
+    background-color: white; 
+    border: none;
+    color:  black;
+    padding: 5px;
+    font-size: 18px;
+    margin: 25px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    height:40px;
+    width:150px;
+    display: center;
+    align-items: center;
+  }
+
+
+
+
 body{
+    text-align: center;
+    align-content: center;
     background: rgb(120, 47, 64);
 }
 
+
+
+
 h1, h2{
-    color:rgb(207, 174, 103)
+    font-family: 'Adobe Garamond', 'Times New Roman', Helvetica;
+    color:rgb(207, 174, 103);
+    font-size: xx-large;
 }
 
 
 p{
+    font-family: Helvetica;
     color: white
 }
+
+h3{
+    color: black;
+    font-size: x;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  .topnav button {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    border-style: solid;
+  }
+  .topnav a {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    border-style: solid;
+  }
+  
+  .topnav a.active1 {
+    background-color: white;
+    color: black;
+  }
+
+
+
+  .topnav a.active2 {
+    background-color:rgb(207, 174, 103);
+    color: black;
+  }
+
+  
+  
+  .topnav-right {
+    float: right;
+  }
+
+
+  .column {
+    text-align: left;
+    float: left;
+    width: 40%;
+    }
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    }

@@ -11,7 +11,6 @@ def home(request):
 
 
 def get_filtered_classes(form):
-    #cumul_results_filled = False
     filter_results = []
     results_before_req_check = []
     final_results = []
@@ -71,9 +70,7 @@ def get_filtered_classes(form):
     
     if form.cleaned_data["professor"] != "":
         prof_full_name = form.cleaned_data["professor"].split()
-        #print(prof_full_name)
-        #name_split = prof_full_name.split()
-        #print("prof_full_name = ", name_split)
+        
         if len(prof_full_name) == 2:
             f_name = prof_full_name[0]
             l_name = prof_full_name[1]
@@ -93,7 +90,6 @@ def get_filtered_classes(form):
         with connection.cursor() as cursor:
             
             start_timeobj = form.cleaned_data["time_start"]
-            print("type of start_timeobj is", type(start_timeobj), "value is: ", start_timeobj)
             cursor.execute("""SELECT course_reference_number, name, subject_id, number_id, section, first_name, last_name, lec_days, time_start, time_end, 
                             rec_day, recitation_time_start, recitation_time_end 
                             FROM classes_class, classes_professor 
@@ -102,8 +98,6 @@ def get_filtered_classes(form):
             
             filter_results = dictfetchall(cursor)
             results_before_req_check = [x for x in results_before_req_check if x in filter_results]
-
-    #classes_class.recitation_time_start BETWEEN %s AND %s""", [start_timeobj, end_timeobj])
    
 
     if form.cleaned_data["time_end"] != None:
@@ -112,13 +106,12 @@ def get_filtered_classes(form):
                             rec_day, recitation_time_start, recitation_time_end  
                             FROM classes_class, classes_professor 
                             WHERE classes_class.professor_id_id = classes_professor.FSUID_id AND 
-                            classes_class.recitation_time_end <= %s""", [form.cleaned_data["time_end"]])
+                            classes_class.time_end <= %s""", [form.cleaned_data["time_end"]])
             
             filter_results = dictfetchall(cursor)
             results_before_req_check = [x for x in results_before_req_check if x in filter_results]
 
     
-
     if (form.cleaned_data["CSBS_Req"] == False and form.cleaned_data["CSBS_Elec"] == False and
         form.cleaned_data["CSBA_Req"] == False and form.cleaned_data["CSBA_Elec"] == False):
             return results_before_req_check
@@ -134,7 +127,6 @@ def get_filtered_classes(form):
             
             filter_results = dictfetchall(cursor)
             new_results = [x for x in filter_results if x in results_before_req_check]
-            #final_results += new_results
             final_results += [x for x in new_results if x not in final_results]
 
     if form.cleaned_data["CSBS_Elec"] == True:
@@ -147,7 +139,6 @@ def get_filtered_classes(form):
             
             filter_results = dictfetchall(cursor)
             new_results = [x for x in filter_results if x in results_before_req_check]
-            #final_results += new_results
             final_results += [x for x in new_results if x not in final_results]
 
     if form.cleaned_data["CSBA_Req"] == True:
@@ -160,7 +151,6 @@ def get_filtered_classes(form):
             
             filter_results = dictfetchall(cursor)
             new_results = [x for x in filter_results if x in results_before_req_check]
-            #final_results += new_results
             final_results += [x for x in new_results if x not in final_results]
 
     if form.cleaned_data["CSBA_Elec"] == True:
@@ -173,15 +163,10 @@ def get_filtered_classes(form):
             
             filter_results = dictfetchall(cursor)
             new_results = [x for x in filter_results if x in results_before_req_check]
-            #final_results += new_results
             final_results += [x for x in new_results if x not in final_results]
-
 
     return final_results
         
-
-
-    
 
 def get_all_fields_from_form(instance):
     fields = list(instance.base_fields)
@@ -197,22 +182,11 @@ def results(request):
     if request.method == 'POST':
         form = forms.SearchFilterForm(request.POST)
         if form.is_valid():
-            #valid_form = form
             all_fields = get_all_fields_from_form(forms.SearchFilterForm())
-            print(all_fields)
-            for field in get_all_fields_from_form(forms.SearchFilterForm()):
-                print(field, form.cleaned_data[field])
-            
-            print('\n\n\n', get_filtered_classes(form))
 
             return render(request, 'add/results.html', {'header': ['Course Reference Number', 'Course ID', 'Section', 'Name', 'Professor', 'Lecture Days', 'Time Start', 'Time End', 'Recitation Days', 'Rec. Time Start', 'Rec. Time End'], 'body':get_filtered_classes(form)})
     
-    #course_reference_number, name, subject_id, number_id, section, first_name, last_name, lec_days, time_start, time_end, 
-                            #rec_day, recitation_time_start, recitation_time_end
-
-    #return render(request, 'add/results.html')
     return redirect('/classes/add/')
-
 
 
 
@@ -229,7 +203,31 @@ def add_success(request):
     if request.method == 'POST':
        
         added_class = request.POST.get('submit')
-        print('\n\nadded_class = ', added_class)
+        user_id = request.user.id
+
+        already_reg = ()
+
+        with connection.cursor() as cursor:
+            cursor.execute("""SELECT course_reference_number_id
+                            FROM classes_enrolled_in
+                            WHERE classes_enrolled_in.FSUID_id = %s AND 
+                            course_reference_number_id = %s""", [user_id, added_class])
+
+            already_reg = cursor.fetchall()
+        
+        if already_reg:
+            failed_class_details = ()
+            with connection.cursor() as cursor:
+                cursor.execute("""SELECT name, subject_id, number_id, section
+                                  FROM classes_class
+                                  WHERE course_reference_number = %s""", [added_class]
+                )
+                failed_class_details = cursor.fetchall()
+
+            return render(request, 'add/add_fail.html', {'failed_class_reference':added_class, 'already_registered' : True,
+                                'name': failed_class_details[0][0], 'subject_id': failed_class_details[0][1],
+                                'number_id': failed_class_details[0][2], 'section': failed_class_details[0][3]})
+
         days = ()
         times = ()
         with connection.cursor() as cursor:
@@ -247,41 +245,6 @@ def add_success(request):
             
             times = cursor.fetchall()
 
-        print('days = ', days)
-        print('times = ', times)
-        
-        user_id = request.user.id
-
-        # the_response = []
-
-        # with connection.cursor() as cursor:
-        #     cursor.execute("""SELECT course_reference_number
-        #                     FROM classes_class
-        #                     WHERE rec_we = TRUE AND %s = TRUE""", [days[0][7]])
-            
-        #     the_response = cursor.fetchall()
-
-        # print('the response = ', the_response)
-
-
-###############################################################################################
-
-
-        # the_response = []
-
-        # with connection.cursor() as cursor:
-        #     cursor.execute("""SELECT course_reference_number, name
-        #                     FROM classes_enrolled_in, classes_class
-        #                     WHERE classes_enrolled_in.FSUID_id = %s AND classes_enrolled_in.course_reference_number_id = classes_class.course_reference_number""", [user_id])
-            
-        #     the_response = cursor.fetchall()
-
-        # print('user_id = ', user_id)
-        # print('the response = ', the_response)
-
-#WHERE classes_enrolled_in.FSUID_id = %s AND classes_enrolled_in.course_reference_number_id = classes_class.course_reference_number""", [user_id])
-
-##################################################################
         
         course_conflicts_with_new_course = ()
 
@@ -398,35 +361,41 @@ def add_success(request):
 
              ])
 
-            print('days[0][0] = ', days[0][0])
-            print('days[0][1] = ', days[0][1])
-            print('days[0][2] = ', days[0][2])
-            print('days[0][3] = ', days[0][3])
-            print('days[0][4] = ', days[0][4])
-            print('days[0][5] = ', days[0][5])
-            print('days[0][6] = ', days[0][6])
-            print('days[0][7] = ', days[0][7])
-            print('days[0][8] = ', days[0][8])
-            print('days[0][9] = ', days[0][9])
-            print('times[0][0] = ', times[0][0])
-            print('times[0][1] = ', times[0][1])
-            print('times[0][2] = ', times[0][2])
-            print('times[0][3] = ', times[0][3])
+            
             course_conflicts_with_new_course = cursor.fetchall()
-            print(course_conflicts_with_new_course)
+            
 
         if not course_conflicts_with_new_course:
-            print("\n\n\nYES IT WORKED!!!!!!!!!!!!!\n")
-            return render(request, 'add/add_success.html', {'added_class':added_class})
+            
+            added_class_details = ()
+            with connection.cursor() as cursor:
+                cursor.execute("""SELECT name, subject_id, number_id, section
+                                  FROM classes_class
+                                  WHERE course_reference_number = %s""", [added_class]
+                )
+                added_class_details = cursor.fetchall()
+            
+            
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO classes_enrolled_in(FSUID_id, course_reference_number_id) VALUES (%s, %s)", [user_id, added_class])
+                
+            return render(request, 'add/add_success.html', {'added_class_reference':added_class, 'name': added_class_details[0][0],
+                                'subject_id': added_class_details[0][1], 'number_id': added_class_details[0][2],
+                                'section': added_class_details[0][3]})
         else:
-            print('COULDN''T ADD CLASS B/C OF SCHEDULING CONFLICT')
-            return render(request, 'add/add_fail.html', {'failed_class':added_class})
 
-#######################################################################
+            failed_class_details = ()
+            with connection.cursor() as cursor:
+                cursor.execute("""SELECT name, subject_id, number_id, section
+                                  FROM classes_class
+                                  WHERE course_reference_number = %s""", [added_class])
+                failed_class_details = cursor.fetchall()
 
-        #return render(request, 'add/add_success.html', {'added_class':added_class})
+            return render(request, 'add/add_fail.html', {'failed_class_reference':added_class, 'already_registered' : False,
+                                'name': failed_class_details[0][0], 'subject_id': failed_class_details[0][1],
+                                'number_id': failed_class_details[0][2], 'section': failed_class_details[0][3]})
+            
 
-    #return render(request, 'add/add_success.html')
     return redirect('/classes/add/')
 
 
@@ -436,6 +405,3 @@ def add_fail(request):
         pass
     return redirect('/classes/add/')
 
-
-def can_add_class(ref_num):
-    pass

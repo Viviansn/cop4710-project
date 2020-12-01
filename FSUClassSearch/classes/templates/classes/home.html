@@ -1,19 +1,17 @@
 {% extends 'base_layout.html' %}
 
 {% block content %}
-    <h1>Home page - {{user}}</h1>
-    <h2>You are logged in.</h2>
-    <h2>"View" button here</h2>
-    <button>
-        <a href="/classes/view/">View my classes</a>
-    </button>
-    <h2>"Add" button here</h2>
-    <button>
-        <a href="/classes/add/">Add a class</a>
-    </button>
-    <h2>"Drop" button here</h2>
-    <button>
-        <a href="/classes/drop/">Drop a class</a>
-    </button>
     
+    <h1>Welcome, {{first_name}} {{last_name}}!</h1>
+
+    <div class="a">
+        <br>
+        <a class="button" href="/classes/view/">View my schedule</a>
+        <br>
+        <a class="button" href="/classes/add/">Add a class</a>
+        <br>
+        <a class="button" href="/classes/drop/">Drop a class</a>
+        <br>
+    </div>
+
 {% endblock %}

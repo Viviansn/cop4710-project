@@ -1,7 +1,53 @@
 {% extends 'base_layout.html' %}
 
 {% block content %}
-    <h1>DROP: Displays list of registered classes and a buttons/checkboxes to drop:</h1>
     
+    <h1>My Schedule</h1>
+    
+    <div class="b">
+        {% if classes %}
+            <br><h3>Please select the reference number of the class that you want to drop from your schedule below:</h3>
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% for heading in header %}
+                            <th>{{heading}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for class in classes %}
+                        <tr>
+                            <td>{{class.course_reference_number}}</td>
+                            <td>{{class.subject_id}}{{class.number_id}}</td>
+                            <td>{{class.section}}</td>
+                            <td>{{class.name}}</td>
+                            <td>{{class.first_name}} {{class.last_name}}</td>
+                            <td>{{class.lec_days}}</td>
+                            <td>{{class.time_start}}</td>
+                            <td>{{class.time_end}}</td>
+                            <td>{{class.location}}</td>
+                            <td>{{class.rec_day}}</td>
+                            <td>{{class.recitation_time_start}}</td>
+                            <td>{{class.recitation_time_end}}</td>
+                            <td>{{class.recitation_location}}</td>
+
+                            <td>
+                                <form  action="{% url 'classes:drop:drop_success' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" value="{{class.course_reference_number}}" name="submit">
+                                </form>
+                            </td> 
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <br><br>
+            <h3>You are not registered for any classes.</h3>
+        {% endif %}
+    </div>
+
     
 {% endblock %}

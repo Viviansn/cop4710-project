@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^view/', include('classes.view.urls')),
     url(r'^add/', include('classes.add.urls')),
     url(r'^drop/', include('classes.drop.urls')),
-    #url(r'^view/$', views.view, name="view")
+    
 ]
 
 urlpatterns += staticfiles_urlpatterns()
