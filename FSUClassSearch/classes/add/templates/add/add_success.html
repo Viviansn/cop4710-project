@@ -1,7 +1,10 @@
 {% extends 'base_layout.html' %}
 
 {% block content %}
-    <h1>The class {{added_class}} has been successfully added (This is the page after adding the class from /classes/add/results), </h1>
+    <h1>{{subject_id}}{{number_id}}-{{section}} (#{{added_class_reference}}) "{{name}}"
+    has been successfully added to your schedule. </h1>
+
+    <a class="button" href="/classes/view/">View my schedule</a>
     
     
 {% endblock %}

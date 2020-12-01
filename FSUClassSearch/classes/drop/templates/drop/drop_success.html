@@ -1,7 +1,11 @@
 {% extends 'base_layout.html' %}
 
 {% block content %}
-    <h1>DROP SUCCESS: Page displayed after dropping a class from page /classes/drop/:</h1>
+    
+    <br>
+    <h1>DROP SUCCESS: Class {{deleted_class}} was removed from your schedule.</h1>
+
+    <a class="button" href="/classes/view/">View my schedule</a>
     
     
 {% endblock %}

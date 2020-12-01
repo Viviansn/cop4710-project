@@ -1,8 +1,16 @@
 {% extends 'base_layout.html' %}
 
 {% block content %}
-    <h1>ERROR: The class {{failed_class}} could not be added due to a conflict in your current schedule.
-         (This is the page after failing to add the class from /classes/add/results), </h1>
     
-    
+    <br>
+    {% if already_registered %}
+        <h1>ERROR: You are already registered in {{subject_id}}{{number_id}}-{{section}} (#{{failed_class_reference}}) "{{name}}".</h1>
+    {% else %}
+        <h1>ERROR: {{subject_id}}{{number_id}}-{{section}} (#{{failed_class_reference}}) "{{name}}" could
+             not be added due to a conflict in your current schedule.
+        </h1>
+    {% endif %}
+
+    <a class="button" href="/classes/view/">View my schedule</a>
+         
 {% endblock %}

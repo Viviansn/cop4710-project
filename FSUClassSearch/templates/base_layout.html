@@ -10,18 +10,26 @@
 </head>
 
 <body>
-    <h1>Florida State University</h1>
-    {% if user.is_authenticated %}
-    <nav>
+  <h1>Florida State University</h1>
+  {% if user.is_authenticated %}
+    <div class="topnav">
+      <a class="active1" href="/classes/">Home</a>
+      <a class="active2" href="/classes/view/">View my schedule</a>
+      <a class="active2" href="/classes/add/">Add a class</a>
+      <a class="active2" href="/classes/drop/">Drop a class</a>
       <form action="{% url 'logout' %}" method="POST">
         {% csrf_token %}
-        <button type="submit">Logout</button>
+        <div class="topnav-right">
+          <button type="submit">Logout</button>
+        </div>
+        
       </form>
-    </nav>
-    {% endif %}
+    </div>
+  {% endif %}
     <div class="wrapper">
-      {% block content %}
-      {% endblock %}
+      
+  {% block content %}
+  {% endblock %}
   </div>
 </body>
 </html>
